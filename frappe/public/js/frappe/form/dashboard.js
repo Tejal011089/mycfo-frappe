@@ -32,19 +32,44 @@ frappe.ui.form.Dashboard = Class.extend({
 	},
 	add_doctype_badge: function(doctype, fieldname) {
 		if(frappe.model.can_read(doctype)) {
-			this.add_badge(__(doctype), doctype, function() {
+			this.add_badge1(__(doctype), doctype, function() {
 				frappe.route_options = {};
 				frappe.route_options[fieldname] = cur_frm.doc.name;
 				frappe.set_route("List", doctype);
 			}).attr("data-doctype", doctype);
 		}
 	},
-	add_badge: function(label, doctype, onclick) {
+
+
+	add_badge1: function(label, doctype, onclick) {
+		var badge = $(repl('<div class="col-md-4">\
+			<div class="alert-badge">\
+				<a class="badge-link h6 text-muted"><button style="border:none;background-color:#F2F2F2;font-color:#2E2E2E"><label>%(label)s\
+				<span class="badge" style="margin-left: 10px; font-size: 12px;">-</span></label></button></a>\
+			</div></div>', {label:label, icon: frappe.boot.doctype_icons[doctype]}))
+				.appendTo(this.body)
+
+		badge.find(".badge-link").click(onclick);
+		this.wrapper.toggle(true);
+
+		return badge.find(".alert-badge");
+	},
+
+	add_page_badge: function(label,page_name,data){
+		console.log(data)
+		this.add_badge(__(page_name), label, function() {
+			//frappe.route_options = {};
+			frappe.route_options = data;
+			frappe.set_route(page_name);
+		}).attr("data-doctype", page_name);	
+	},
+
+	add_badge: function(label, page_name, onclick) {
 		var badge = $(repl('<div class="col-md-4">\
 			<div class="alert-badge">\
 				<a class="badge-link h6 text-muted">%(label)s\
 				<span class="badge" style="margin-left: 10px; font-size: 12px;">-</span></a>\
-			</div></div>', {label:label, icon: frappe.boot.doctype_icons[doctype]}))
+			</div></div>', {label:page_name}))
 				.appendTo(this.body)
 
 		badge.find(".badge-link").click(onclick);
@@ -55,9 +80,22 @@ frappe.ui.form.Dashboard = Class.extend({
 	set_badge_count: function(data) {
 		var me = this;
 		$.each(data, function(doctype, count) {
-			$(me.wrapper)
-				.find(".alert-badge[data-doctype='"+doctype+"'] .badge")
+			if(doctype=='Contact'){
+				$(me.wrapper)
+				.find(".alert-badge[data-doctype='FFWW'] .badge")
 				.html(cint(count));
+			}
+			else if(doctype=='Operational Matrix'){
+				$(me.wrapper)
+				.find(".alert-badge[data-doctype='Operational Matrix Details'] .badge")
+				.html(cint(count));
+			}
+			else{
+				console.log("innnside no   conatct")
+				$(me.wrapper)
+					.find(".alert-badge[data-doctype='"+doctype+"'] .badge")
+					.html(cint(count));
+			}
 		});
 	},
 	add_progress: function(title, percent) {
