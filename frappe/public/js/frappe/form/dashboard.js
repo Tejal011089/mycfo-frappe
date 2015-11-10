@@ -40,6 +40,17 @@ frappe.ui.form.Dashboard = Class.extend({
 		}
 	},
 
+	add_doctype_badge_ffww: function(doctype, fieldname,status) {
+		if(frappe.model.can_read(doctype)) {
+			this.add_badge1(__(doctype), doctype, function() {
+				if(status==false)
+					msgprint("Financial data is not updated")
+				frappe.route_options = {};
+				//frappe.route_options[fieldname] = cur_frm.doc.name;
+				frappe.set_route("List", doctype);
+			}).attr("data-doctype", doctype);
+		}
+	},
 
 	add_badge1: function(label, doctype, onclick) {
 		var badge = $(repl('<div class="col-md-4">\
@@ -55,20 +66,22 @@ frappe.ui.form.Dashboard = Class.extend({
 		return badge.find(".alert-badge");
 	},
 
-	add_page_badge: function(label,page_name,data){
-		console.log(data)
+	add_page_badge: function(label,page_name){
+		console.log(["data",page_name])
+		console.log(cur_frm.doc.name)
 		this.add_badge(__(page_name), label, function() {
-			//frappe.route_options = {};
-			frappe.route_options = data;
-			frappe.set_route(page_name);
-		}).attr("data-doctype", page_name);	
+			frappe.route_options = {};
+			frappe.route_options[page_name] = cur_frm.doc.name;
+			console.log(frappe.route_options)
+			frappe.set_route(label);
+		}).attr("data-doctype", label);	
 	},
 
 	add_badge: function(label, page_name, onclick) {
 		var badge = $(repl('<div class="col-md-4">\
 			<div class="alert-badge">\
-				<a class="badge-link h6 text-muted">%(label)s\
-				<span class="badge" style="margin-left: 10px; font-size: 12px;">-</span></a>\
+				<a class="badge-link h6 text-muted"><button style="border:none;background-color:#F2F2F2;font-color:#2E2E2E"><label>%(label)s\
+				<span class="badge" style="margin-left: 10px; font-size: 12px;">-</span></label></button></a>\
 			</div></div>', {label:page_name}))
 				.appendTo(this.body)
 
@@ -90,8 +103,14 @@ frappe.ui.form.Dashboard = Class.extend({
 				.find(".alert-badge[data-doctype='Operational Matrix Details'] .badge")
 				.html(cint(count));
 			}
+			else if(doctype=='Project Commercial'){
+				$(me.wrapper)
+				.find(".alert-badge[data-doctype='Project Commercial'] .badge")
+				.html(cint(count));
+			}
 			else{
 				console.log("innnside no   conatct")
+				console.log(doctype)
 				$(me.wrapper)
 					.find(".alert-badge[data-doctype='"+doctype+"'] .badge")
 					.html(cint(count));

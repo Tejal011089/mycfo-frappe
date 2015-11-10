@@ -1,7 +1,13 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // MIT License. See license.txt
 
+
+
+
+
+
 frappe.ready(function() {
+	console.log("refresh111")
 
 	$('.btn-send').off("click").on("click", function() {
 		var email = $('[name="email"]').val();
@@ -43,3 +49,6 @@ frappe.ready(function() {
 var msgprint = function(txt) {
 	if(txt) $("#contact-alert").html(txt).toggle(true);
 }
+
+
+
