@@ -7,8 +7,6 @@
 
 
 frappe.ready(function() {
-	console.log("refresh111")
-
 	$('.btn-send').off("click").on("click", function() {
 		var email = $('[name="email"]').val();
 		var message = $('[name="message"]').val();

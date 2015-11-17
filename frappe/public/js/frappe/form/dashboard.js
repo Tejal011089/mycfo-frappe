@@ -67,12 +67,9 @@ frappe.ui.form.Dashboard = Class.extend({
 	},
 
 	add_page_badge: function(label,page_name){
-		console.log(["data",page_name])
-		console.log(cur_frm.doc.name)
 		this.add_badge(__(page_name), label, function() {
 			frappe.route_options = {};
 			frappe.route_options[page_name] = cur_frm.doc.name;
-			console.log(frappe.route_options)
 			frappe.set_route(label);
 		}).attr("data-doctype", label);	
 	},
@@ -100,7 +97,7 @@ frappe.ui.form.Dashboard = Class.extend({
 			}
 			else if(doctype=='Operational Matrix'){
 				$(me.wrapper)
-				.find(".alert-badge[data-doctype='Operational Matrix Details'] .badge")
+				.find(".alert-badge[data-doctype='Operational Matrix'] .badge")
 				.html(cint(count));
 			}
 			else if(doctype=='Project Commercial'){
@@ -109,8 +106,6 @@ frappe.ui.form.Dashboard = Class.extend({
 				.html(cint(count));
 			}
 			else{
-				console.log("innnside no   conatct")
-				console.log(doctype)
 				$(me.wrapper)
 					.find(".alert-badge[data-doctype='"+doctype+"'] .badge")
 					.html(cint(count));
