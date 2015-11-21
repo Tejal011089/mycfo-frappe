@@ -43,8 +43,6 @@ frappe.ui.form.Dashboard = Class.extend({
 	add_doctype_badge_ffww: function(doctype, fieldname,status) {
 		if(frappe.model.can_read(doctype)) {
 			this.add_badge1(__(doctype), doctype, function() {
-				if(status==false)
-					msgprint("Financial data is not updated")
 				frappe.route_options = {};
 				//frappe.route_options[fieldname] = cur_frm.doc.name;
 				frappe.set_route("List", doctype);
